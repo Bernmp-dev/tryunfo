@@ -78,6 +78,8 @@ class App extends React.Component {
       cardImage,
     }));
 
+    console.log('click');
+
     this.setState({
       cardName: '',
       cardDescription: '',
