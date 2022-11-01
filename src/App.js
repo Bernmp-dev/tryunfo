@@ -17,7 +17,7 @@ class App extends React.Component {
       cardRare: 'normal',
       cardTrunfo: false,
       storedCards: [],
-      filteredByName: [],
+      filteredCards: [],
     };
   }
 
@@ -90,7 +90,7 @@ class App extends React.Component {
         ...storedCards,
         { ...newState,
         }],
-      filteredByName: [
+      filteredCards: [
         ...storedCards,
         { ...newState,
         }],
@@ -107,21 +107,31 @@ class App extends React.Component {
     const { storedCards } = this.state;
     const newStore = storedCards.filter(({ cardName }) => cardName !== name);
 
-    this.setState({ storedCards: newStore, filteredByName: newStore });
+    this.setState({ storedCards: newStore, filteredCards: newStore });
   };
 
-  filterByName = ({ target }) => {
+  severalFilters = ({ target }) => {
     const { name, value } = target;
     const { storedCards } = this.state;
+    const filteredState = storedCards
+      .filter(({ cardName, cardRare }) => cardName.includes(value)
+      || cardRare === value);
 
-    this.setState({ [name]: storedCards
-      .filter(({ cardName }) => cardName.includes(value)) });
+    this.setState({ [name]: filteredState });
   };
+
+  // filterByRarity = ({ target }, cardFilter) => {
+  //   const { name, value } = target;
+  //   const { storedCards } = this.state;
+
+  //   this.setState({ [name]: storedCards
+  //     .filter((curr) => curr.cardFilter.includes(value)) });
+  // };
 
   render() {
     const { cardName, cardDescription, cardAttr1,
       cardAttr2, cardAttr3, cardImage, cardRare,
-      cardTrunfo, filteredByName } = this.state;
+      cardTrunfo, filteredCards } = this.state;
 
     return (
       <>
@@ -159,14 +169,27 @@ class App extends React.Component {
         <div>
           Pesquisar:
           <input
-            name="filteredByName"
+            name="filteredCards"
             type="text"
             data-testid="name-filter"
-            onChange={ this.filterByName }
+            onChange={ this.severalFilters }
           />
+          <label htmlFor="rare-filter">
+            Raridade:
+            <select
+              name="filteredCards"
+              data-testid="rare-filter"
+              onChange={ this.severalFilters }
+            >
+              <option value="">todas</option>
+              <option value="normal">normal</option>
+              <option value="raro">raro</option>
+              <option value="muito raro">muito raro</option>
+            </select>
+          </label>
         </div>
         <div className="deckContainer">
-          {filteredByName.map((curr, i) => (
+          {filteredCards.map((curr, i) => (
             <div className="savedCardContainer" key={ `FullCard: ${curr.cardName} ${i}` }>
               <Card
                 key={ curr.cardName }
