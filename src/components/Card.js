@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 class Card extends Component {
   render() {
     const {
+      classIn,
       cardName,
       cardDescription,
       cardAttr1,
@@ -15,7 +16,7 @@ class Card extends Component {
     } = this.props;
 
     return (
-      <div>
+      <div className={ classIn }>
         <h2 data-testid="name-card">{ cardName }</h2>
         <img src={ cardImage } alt={ cardName } data-testid="image-card" />
         <h4 data-testid="description-card">{ cardDescription }</h4>
@@ -29,7 +30,12 @@ class Card extends Component {
   }
 }
 
+Card.defaultProps = {
+  classIn: 'null',
+};
+
 Card.propTypes = {
+  classIn: PropTypes.string,
   cardName: PropTypes.string.isRequired,
   cardDescription: PropTypes.string.isRequired,
   cardAttr1: PropTypes.string.isRequired,

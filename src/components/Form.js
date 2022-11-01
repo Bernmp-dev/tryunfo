@@ -6,11 +6,12 @@ import Attributes from './Attributes';
 import CardImage from './CardImage';
 import CardRarity from './CardRarity';
 import SuperTrunfoCheck from './SuperTrunfoCheck';
-import SaveButton from './AnyButton';
+import Button from './AnyButton';
 
 class Form extends Component {
   render() {
     const {
+      classIn,
       cardName,
       cardDescription,
       cardAttr1,
@@ -26,7 +27,7 @@ class Form extends Component {
     } = this.props;
 
     return (
-      <div>
+      <div className={ classIn }>
         <CardName cardName={ cardName } onInputChange={ onInputChange } />
         <CardDescription
           cardDescription={ cardDescription }
@@ -62,9 +63,11 @@ class Form extends Component {
         <CardImage cardImage={ cardImage } onInputChange={ onInputChange } />
         <CardRarity cardRare={ cardRare } onInputChange={ onInputChange } />
         { !hasTrunfo ? (
-          <SuperTrunfoCheck cardTrunfo={ cardTrunfo } onInputChange={ onInputChange } />)
-          : <p>Você já tem um Super Trunfo em seu baralho</p>}
-        <SaveButton
+          <SuperTrunfoCheck
+            cardTrunfo={ cardTrunfo }
+            onInputChange={ onInputChange }
+          />) : <p>Você já tem um Super Trunfo em seu baralho</p>}
+        <Button
           keyIn="DelB"
           nameIn="save-button"
           buttonTitle="Save"
@@ -78,6 +81,7 @@ class Form extends Component {
 }
 
 Form.propTypes = {
+  classIn: PropTypes.string.isRequired,
   cardName: PropTypes.string.isRequired,
   cardDescription: PropTypes.string.isRequired,
   cardAttr1: PropTypes.string.isRequired,

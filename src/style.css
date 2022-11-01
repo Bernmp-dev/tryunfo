@@ -1,0 +1,56 @@
+body {
+  background-color: purple;
+}
+
+.firstContainer {
+  display: flex;
+  justify-content: space-around;
+}
+
+.formContainer {
+  align-items: center;
+  background-color: whitesmoke;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  padding: 50px;
+  width: 500px;
+}
+
+.previewContainer {
+  align-items: center;
+  background-color: white;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  padding: 20px;
+  width: 500px;
+}
+
+.deckContainer {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
+
+.savedCardContainer {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  margin: 1px;
+  padding: 10px;
+}
+
+.savedCards {
+  align-items: center;
+  background-color: white;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  padding: 1px;
+  width: 350px;
+}

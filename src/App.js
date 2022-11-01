@@ -1,7 +1,8 @@
 import React from 'react';
+import './style.css';
 import Form from './components/Form';
 import Card from './components/Card';
-import AnyButton from './components/AnyButton';
+import Button from './components/AnyButton';
 
 class App extends React.Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class App extends React.Component {
       cardRare: 'normal',
       cardTrunfo: false,
       storedCards: [],
+      filteredByName: [],
     };
   }
 
@@ -74,18 +76,23 @@ class App extends React.Component {
   };
 
   onSaveButtonClick = () => {
-    this.setState(({ cardName, cardDescription, cardAttr1,
-      cardAttr2, cardAttr3, cardRare, cardImage, cardTrunfo, storedCards }) => ({
+    const { storedCards } = this.state;
+    this.setState((newState = {
+      cardName,
+      cardDescription,
+      cardAttr1,
+      cardAttr2,
+      cardAttr3,
+      cardRare,
+      cardImage,
+      cardTrunfo }) => ({
       storedCards: [
         ...storedCards,
-        { cardName,
-          cardDescription,
-          cardAttr1,
-          cardAttr2,
-          cardAttr3,
-          cardRare,
-          cardImage,
-          cardTrunfo,
+        { ...newState,
+        }],
+      filteredByName: [
+        ...storedCards,
+        { ...newState,
         }],
     }));
 
@@ -98,21 +105,32 @@ class App extends React.Component {
   RemCard = ({ target }) => {
     const { name } = target;
     const { storedCards } = this.state;
+    const newStore = storedCards.filter(({ cardName }) => cardName !== name);
 
-    this.setState({ storedCards: storedCards
-      .filter(({ cardName }) => cardName !== name) });
+    this.setState({ storedCards: newStore, filteredByName: newStore });
+  };
+
+  filterByName = ({ target }) => {
+    const { name, value } = target;
+    const { storedCards } = this.state;
+
+    this.setState({ [name]: storedCards
+      .filter(({ cardName }) => cardName.includes(value)) });
   };
 
   render() {
-    const { cardName, cardDescription, cardAttr1, cardAttr2,
-      cardAttr3, cardImage, cardRare, cardTrunfo, storedCards } = this.state;
+    const { cardName, cardDescription, cardAttr1,
+      cardAttr2, cardAttr3, cardImage, cardRare,
+      cardTrunfo, filteredByName } = this.state;
+
     return (
       <>
         <div>
           <h1>Tryunfo</h1>
         </div>
-        <div>
+        <div className="firstContainer">
           <Form
+            classIn="formContainer"
             cardName={ cardName }
             cardDescription={ cardDescription }
             cardAttr1={ cardAttr1 }
@@ -126,9 +144,8 @@ class App extends React.Component {
             onInputChange={ this.onInputChange }
             hasTrunfo={ this.hasTrunfo() }
           />
-        </div>
-        <div>
           <Card
+            classIn="previewContainer"
             cardName={ cardName }
             cardDescription={ cardDescription }
             cardAttr1={ cardAttr1 }
@@ -140,10 +157,20 @@ class App extends React.Component {
           />
         </div>
         <div>
-          {storedCards.map((curr, i) => (
-            <>
+          Pesquisar:
+          <input
+            name="filteredByName"
+            type="text"
+            data-testid="name-filter"
+            onChange={ this.filterByName }
+          />
+        </div>
+        <div className="deckContainer">
+          {filteredByName.map((curr, i) => (
+            <div className="savedCardContainer" key={ `FullCard: ${curr.cardName} ${i}` }>
               <Card
                 key={ curr.cardName }
+                classIn="savedCards"
                 cardName={ curr.cardName }
                 cardDescription={ curr.cardDescription }
                 cardAttr1={ curr.cardAttr1 }
@@ -153,14 +180,16 @@ class App extends React.Component {
                 cardRare={ curr.cardRare }
                 cardTrunfo={ curr.cardTrunfo }
               />
-              <AnyButton
-                keyIn={ `Del ${i}` }
+              <Button
+                className="remCardButon"
+                keyIn={ `Del${i}` }
                 nameIn={ curr.cardName }
                 dataTestId="delete-button"
                 buttonTitle="Excluir"
-                onClickIn={ (event) => this.RemCard(event) }
+                disableIn={ null }
+                onClickIn={ (e) => this.RemCard(e) }
               />
-            </>
+            </div>
           ))}
         </div>
       </>

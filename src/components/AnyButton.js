@@ -22,12 +22,16 @@ class SaveButton extends Component {
   }
 }
 
+SaveButton.defaultProps = {
+  disableIn: false,
+};
+
 SaveButton.propTypes = {
   keyIn: PropTypes.string.isRequired,
   nameIn: PropTypes.string.isRequired,
   buttonTitle: PropTypes.string.isRequired,
   dataTestId: PropTypes.string.isRequired,
-  disableIn: PropTypes.bool.isRequired,
+  disableIn: PropTypes.bool,
   onClickIn: PropTypes.func.isRequired,
 };
 
