@@ -112,16 +112,17 @@ class App extends React.Component {
   };
 
   severalFilters = ({ target }) => {
-    const { storedCards } = this.state;
+    const { storedCards, trunfoFilter } = this.state;
     const value = target.type === 'checkbox' ? target.checked : target.value;
-    if (target.type === 'checkbox') this.setState({ trunfoFilter: value });
 
     const filteredState = storedCards
       .filter(({ cardName, cardRare, cardTrunfo }) => cardName.includes(value)
       || cardRare === value
       || cardTrunfo === value);
 
+    if (target.name === 'trunfoFilter') this.setState({ trunfoFilter: value });
     this.setState({ filteredCards: filteredState });
+    if (trunfoFilter) this.setState({ filteredCards: storedCards });
   };
 
   render() {
