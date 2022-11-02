@@ -18,6 +18,7 @@ class App extends React.Component {
       cardTrunfo: false,
       storedCards: [],
       filteredCards: [],
+      trunfoFilter: false,
     };
   }
 
@@ -111,27 +112,22 @@ class App extends React.Component {
   };
 
   severalFilters = ({ target }) => {
-    const { name, value } = target;
     const { storedCards } = this.state;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    if (target.type === 'checkbox') this.setState({ trunfoFilter: value });
+
     const filteredState = storedCards
-      .filter(({ cardName, cardRare }) => cardName.includes(value)
-      || cardRare === value);
+      .filter(({ cardName, cardRare, cardTrunfo }) => cardName.includes(value)
+      || cardRare === value
+      || cardTrunfo === value);
 
-    this.setState({ [name]: filteredState });
+    this.setState({ filteredCards: filteredState });
   };
-
-  // filterByRarity = ({ target }, cardFilter) => {
-  //   const { name, value } = target;
-  //   const { storedCards } = this.state;
-
-  //   this.setState({ [name]: storedCards
-  //     .filter((curr) => curr.cardFilter.includes(value)) });
-  // };
 
   render() {
     const { cardName, cardDescription, cardAttr1,
       cardAttr2, cardAttr3, cardImage, cardRare,
-      cardTrunfo, filteredCards } = this.state;
+      cardTrunfo, filteredCards, trunfoFilter } = this.state;
 
     return (
       <>
@@ -173,6 +169,7 @@ class App extends React.Component {
             type="text"
             data-testid="name-filter"
             onChange={ this.severalFilters }
+            disabled={ trunfoFilter }
           />
           <label htmlFor="rare-filter">
             Raridade:
@@ -180,12 +177,23 @@ class App extends React.Component {
               name="filteredCards"
               data-testid="rare-filter"
               onChange={ this.severalFilters }
+              disabled={ trunfoFilter }
             >
               <option value="">todas</option>
               <option value="normal">normal</option>
               <option value="raro">raro</option>
               <option value="muito raro">muito raro</option>
             </select>
+          </label>
+          <label htmlFor="trunfo-filter">
+            <input
+              name="trunfoFilter"
+              type="checkbox"
+              value={ trunfoFilter }
+              data-testid="trunfo-filter"
+              onChange={ this.severalFilters }
+            />
+            Super Trybe Trunfo
           </label>
         </div>
         <div className="deckContainer">
@@ -210,7 +218,7 @@ class App extends React.Component {
                 dataTestId="delete-button"
                 buttonTitle="Excluir"
                 disableIn={ null }
-                onClickIn={ (e) => this.RemCard(e) }
+                onClickIn={ this.RemCard }
               />
             </div>
           ))}

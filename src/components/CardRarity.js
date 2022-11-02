@@ -14,9 +14,9 @@ class CardRarity extends Component {
           value={ cardRare }
           onChange={ onInputChange }
         >
-          <option value="normal" onChange={ onInputChange }>normal</option>
-          <option value="raro" onChange={ onInputChange }>raro</option>
-          <option value="muito raro" onChange={ onInputChange }>muito raro</option>
+          <option value="normal">normal</option>
+          <option value="raro">raro</option>
+          <option value="muito raro">muito raro</option>
         </select>
         <br />
       </label>
